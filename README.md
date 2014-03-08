@@ -2,6 +2,8 @@ os-leaflet
 ==========
 
 A [Leafletjs](http://leafletjs.com/) TileLayer to display Ordnance Survey map data in your Leaflet map via the OS OpenSpace web map service.
+
+!Branch with different `Proj4` definition.
  
 
 ## Description
