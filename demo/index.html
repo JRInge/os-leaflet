@@ -37,6 +37,12 @@
         OSGB: [437324, 115386]
       };
 
+    function onEachFeature(feature, layer) {
+      if (feature.properties && feature.properties.popupContent) {
+        layer.bindPopup(feature.properties.popupContent);
+      }
+    };
+
     function init() {
       var popup = L.popup(),
         openspaceLayer;
@@ -80,6 +86,43 @@
         [51.067945,-1.4305097],
         [50.978027,-1.4316098]
       ]).addTo(map).bindPopup("I am SU32");
+
+      var goldenSquare = {
+        "type": "Feature",
+        "properties": {
+            "popupContent": "Golden Square, Soho, London."
+        },
+        "geometry": {
+            "type": "Point",
+            "coordinates": [-0.133700, 51.509980] //529612,180657
+        }
+      };
+
+      // ref http://spatialreference.org/ref/epsg/27700/gml/
+      proj4.defs("urn:ogc:def:crs:EPSG:27700", L.OSOpenSpace.getCrsAsString());
+
+      var su43 = {
+        "type": "Feature",
+        "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG:27700" } },
+        "properties": {
+          "popupContent": "I am SU43."
+        },
+        "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+                [440000, 130000],
+                [450000, 130000],
+                [450000, 140000],
+                [440000, 140000],
+                [440000, 130000]
+            ]]
+        }
+      };
+
+      L.Proj.geoJson([su43], {onEachFeature: onEachFeature}).addTo(map);
+      L.geoJson([goldenSquare], {
+          onEachFeature: onEachFeature
+      }).addTo(map);
 
       /* add some event callbacks */
       function onMapClick(e) {
